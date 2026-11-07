@@ -1,0 +1,208 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: pam_modules
+Source: https://github.com/apple-oss-distributions/pam_modules
+ tag pam_modules-217.100.6 (commit f777092aa90f5b2b57e40d7abf51e9f1b1b34be3)
+Files-Excluded: *
+Files-Included:
+ modules/pam_env/pam_env.8
+ modules/pam_env/pam_env.c
+ modules/pam_group/*
+ modules/pam_nologin/pam_nologin.8
+ modules/pam_nologin/pam_nologin.c
+ modules/pam_rootok/pam_rootok.8
+ modules/pam_rootok/pam_rootok.c
+ modules/pam_self/*
+ modules/pam_uwtmp/*
+
+Files: modules/pam_group/*
+Copyright: 2003 Networks Associates Technology, Inc.
+ 2008-2009 Apple Inc.
+License: LicenseRef-BSD-3-Clause-OpenPAM
+
+Files: modules/pam_env/*
+ modules/pam_nologin/pam_nologin.c
+ modules/pam_rootok/pam_rootok.c
+Copyright: 1996 Andrew Morgan
+ 1996 Michael K. Johnson
+ 1997 Dave Kinchlea
+ 2002-2009 Apple Inc.
+License: LicenseRef-BSD-3-Clause-Linux-PAM
+
+Files: modules/pam_self/*
+Copyright: 2009 Apple Inc.
+License: LicenseRef-BSD-3-Clause-pam_self
+
+Files: modules/pam_uwtmp/*
+Copyright: 2002-2009 Apple Inc.
+License: LicenseRef-BSD-3-Clause-pam_uwtmp
+
+Files: modules/pam_nologin/pam_nologin.8
+ modules/pam_rootok/pam_rootok.8
+Copyright: 2001 Mark R V Murray
+ 2002-2009 Apple Inc.
+License: LicenseRef-BSD-2-Clause-author-contributors
+
+Files: debian/*
+Copyright: 2026 The Blueberry Pie OS Authors
+License: BSD-2-Clause
+
+License: BSD-2-Clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+ 1. Redistributions of source code must retain the above copyright
+ notice, this list of conditions and the following disclaimer.
+ .
+ 2. Redistributions in binary form must reproduce the above copyright
+ notice, this list of conditions and the following disclaimer in the
+ documentation and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+ IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+ TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: LicenseRef-BSD-2-Clause-author-contributors
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+License: LicenseRef-BSD-3-Clause-Linux-PAM
+ Redistribution and use in source and binary forms of Linux-PAM, with
+ or without modification, are permitted provided that the following
+ conditions are met:
+ .
+ 1. Redistributions of source code must retain any existing copyright
+ notice, and this entire permission notice in its entirety,
+ including the disclaimer of warranties.
+ .
+ 2. Redistributions in binary form must reproduce all prior and current
+ copyright notices, this list of conditions, and the following
+ disclaimer in the documentation and/or other materials provided
+ with the distribution.
+ .
+ 3. The name of any author may not be used to endorse or promote
+ products derived from this software without their specific prior
+ written permission.
+ .
+ THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+ DAMAGE.
+
+License: LicenseRef-BSD-3-Clause-OpenPAM
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote
+    products derived from this software without specific prior written
+    permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+License: LicenseRef-BSD-3-Clause-pam_self
+ Redistribution and use in source and binary forms of pam_self, with
+ or without modification, are permitted provided that the following
+ conditions are met:
+ .
+ 1. Redistributions of source code must retain any existing copyright
+ notice, and this entire permission notice in its entirety,
+ including the disclaimer of warranties.
+ .
+ 2. Redistributions in binary form must reproduce all prior and current
+ copyright notices, this list of conditions, and the following
+ disclaimer in the documentation and/or other materials provided
+ with the distribution.
+ .
+ 3. The name of any author may not be used to endorse or promote
+ products derived from this software without their specific prior
+ written permission.
+ .
+ THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+ DAMAGE.
+
+License: LicenseRef-BSD-3-Clause-pam_uwtmp
+ Redistribution and use in source and binary forms of pam_uwtmp, with
+ or without modification, are permitted provided that the following
+ conditions are met:
+ .
+ 1. Redistributions of source code must retain any existing copyright
+ notice, and this entire permission notice in its entirety,
+ including the disclaimer of warranties.
+ .
+ 2. Redistributions in binary form must reproduce all prior and current
+ copyright notices, this list of conditions, and the following
+ disclaimer in the documentation and/or other materials provided
+ with the distribution.
+ .
+ 3. The name of any author may not be used to endorse or promote
+ products derived from this software without their specific prior
+ written permission.
+ .
+ THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+ DAMAGE.

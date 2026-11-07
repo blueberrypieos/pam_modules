@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+# SPDX-License-Identifier: BSD-2-Clause
+# Copyright (c) 2026 The Blueberry Pie OS Authors
+
+include /usr/share/pietoolchain/rules.mk
+
+MODULES := pam_rootok pam_group pam_nologin pam_self pam_uwtmp pam_env
+FLAGS := $(BASE_CFLAGS) -I$(SRCROOT)/debian
+BUNDLES := $(patsubst %,$(OBJ)/%.so.2,$(MODULES))
+PAGES := $(foreach m,$(MODULES),$(SRCROOT)/modules/$(m)/$(m).8)
+
+.SECONDEXPANSION:
+$(OBJ)/%.o: $(SRCROOT)/modules/$$*/$$*.c
+	@mkdir -p $(OBJ)
+	$(CC) $(FLAGS) -c $(SRCROOT)/modules/$*/$*.c -o $@
+
+$(OBJ)/%.so.2: $(OBJ)/%.o
+	$(CC) $(BASE_LDFLAGS) -bundle $< -lpam -o $@
+
+all: $(BUNDLES)
+
+install: all
+	install -d $(ROOT)/usr/lib/pam $(ROOT)/usr/share/man/man8
+	install -m 755 $(BUNDLES) $(ROOT)/usr/lib/pam/
+	install -m 644 $(PAGES) $(ROOT)/usr/share/man/man8/
+
+.PHONY: all install
