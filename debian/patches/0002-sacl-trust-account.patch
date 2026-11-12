@@ -1,0 +1,37 @@
+Description: Allow a trust account only when its passwd lookup finds no entry
+Author: The Blueberry Pie OS Authors
+Forwarded: not-needed
+Last-Update: 2026-11-11
+
+--- a/modules/pam_sacl/pam_sacl.c
++++ b/modules/pam_sacl/pam_sacl.c
+@@ -20,6 +20,9 @@
+  * 
+  * @APPLE_LICENSE_HEADER_END@
+  */
++/*
++ * Modified 2026-11-11: a trust account is one with no passwd entry (APSL 2.0 section 2.2(b)).
++ */
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -86,11 +89,14 @@
+ 		const char * c;
+ 
+ 		c = strrchr(username, '$');
+-		if (c && *(c + 1) == '\0' && getpwnam_r(username, &pwdbuf, pwbuffer, sizeof(pwbuffer), &pwd) == 0) {
+-			_LOG_VERBOSE("%s: allowing '%s' because it is a "
+-				"computer trust account",
+-				MODULE_NAME, username);
+-			return PAM_SUCCESS;
++		if (c && *(c + 1) == '\0') {
++			if (getpwnam_r(username, &pwdbuf, pwbuffer, sizeof(pwbuffer), &pwd) == 0 &&
++			    pwd == NULL) {
++				_LOG_VERBOSE("%s: allowing '%s' because it is a "
++					"computer trust account",
++					MODULE_NAME, username);
++				return PAM_SUCCESS;
++			}
+ 		}
+ 	}
+ 

@@ -8,6 +8,12 @@ MODULES := pam_rootok pam_group pam_nologin pam_self pam_uwtmp pam_env
 FLAGS := $(BASE_CFLAGS) -I$(SRCROOT)/debian
 BUNDLES := $(patsubst %,$(OBJ)/%.so.2,$(MODULES))
 PAGES := $(foreach m,$(MODULES),$(SRCROOT)/modules/$(m)/$(m).8)
+OD := $(OBJ)/pam_opendirectory.so.2
+OD_OBJS := $(OBJ)/pam_opendirectory.o $(OBJ)/common.o
+OD_PAGE := $(SRCROOT)/modules/pam_opendirectory/pam_opendirectory.8
+SACL := $(OBJ)/pam_sacl.so.2
+SACL_PAGE := $(SRCROOT)/modules/pam_sacl/pam_sacl.8
+NOTICE := $(OBJ)/apsl-notice
 
 .SECONDEXPANSION:
 $(OBJ)/%.o: $(SRCROOT)/modules/$$*/$$*.c
@@ -17,11 +23,31 @@ $(OBJ)/%.o: $(SRCROOT)/modules/$$*/$$*.c
 $(OBJ)/%.so.2: $(OBJ)/%.o
 	$(CC) $(BASE_LDFLAGS) -bundle $< -lpam -o $@
 
-all: $(BUNDLES)
+$(OBJ)/pam_opendirectory.o: $(SRCROOT)/modules/pam_opendirectory/pam_opendirectory.m
+	@mkdir -p $(OBJ)
+	$(CC) $(FLAGS) -x c -c $< -o $@
+
+$(OBJ)/common.o: $(SRCROOT)/debian/common.c
+	@mkdir -p $(OBJ)
+	$(CC) $(FLAGS) -c $< -o $@
+
+$(NOTICE):
+	@mkdir -p $(OBJ)
+	printf '%s\n' 'This program contains Covered Code under the Apple Public Source License 2.0.' \
+		'Its Source Code is available under that License from https://github.com/blueberrypieos/pam_modules.' > $@
+
+$(OD): $(OD_OBJS) $(NOTICE)
+	$(CC) $(BASE_LDFLAGS) -Wl,-sectcreate,__TEXT,__source,$(NOTICE) -bundle $(OD_OBJS) -lpam \
+		-framework OpenDirectory -framework CoreFoundation -o $@
+
+$(SACL): $(OBJ)/pam_sacl.o $(NOTICE)
+	$(CC) $(BASE_LDFLAGS) -Wl,-sectcreate,__TEXT,__source,$(NOTICE) -bundle $< -lpam -o $@
+
+all: $(BUNDLES) $(OD) $(SACL)
 
 install: all
 	install -d $(ROOT)/usr/lib/pam $(ROOT)/usr/share/man/man8
-	install -m 755 $(BUNDLES) $(ROOT)/usr/lib/pam/
-	install -m 644 $(PAGES) $(ROOT)/usr/share/man/man8/
+	install -m 755 $(BUNDLES) $(OD) $(SACL) $(ROOT)/usr/lib/pam/
+	install -m 644 $(PAGES) $(OD_PAGE) $(SACL_PAGE) $(ROOT)/usr/share/man/man8/
 
 .PHONY: all install

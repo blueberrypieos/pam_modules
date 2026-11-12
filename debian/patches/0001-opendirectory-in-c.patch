@@ -1,0 +1,105 @@
+Description: Build pam_opendirectory as C with CoreFoundation
+Author: The Blueberry Pie OS Authors
+Forwarded: not-needed
+Last-Update: 2026-11-10
+
+diff --git a/modules/pam_opendirectory/pam_opendirectory.m b/modules/pam_opendirectory/pam_opendirectory.m
+index 50ae123..7f1e38d 100644
+--- a/modules/pam_opendirectory/pam_opendirectory.m
++++ b/modules/pam_opendirectory/pam_opendirectory.m
+@@ -22,6 +22,30 @@
+  *
+  * @APPLE_LICENSE_HEADER_END@
+  */
++/*
++ * Modified 2026-11-10: C with CoreFoundation, no bootstrap token (APSL 2.0 section 2.2(b)).
++ *
++ * This file was originally made available by Apple under the Apple Public
++ * Source License Version 1.1. Pursuant to section 7 of that license, it is
++ * used and distributed here under the Apple Public Source License
++ * Version 2.0.
++ */
++/*
++ * This file contains Original Code and/or Modifications of Original Code
++ * as defined in and that are subject to the Apple Public Source License
++ * Version 2.0 (the 'License'). You may not use this file except in
++ * compliance with the License. Please obtain a copy of the License at
++ * http://www.opensource.apple.com/apsl/ and read it before using this
++ * file.
++ *
++ * The Original Code and all software distributed under the License are
++ * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
++ * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
++ * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
++ * Please see the License for the specific language governing rights and
++ * limitations under the License.
++ */
+ 
+ /******************************************************************
+  * The purpose of this module is to provide a basic password
+@@ -35,12 +59,11 @@
+ #include <mach/mach_time.h>
+ #include <membership.h>
+ #include <membershipPriv.h>
+-#include <ConfigurationProfiles/CPBootstrapToken.h>
+ #include <CoreFoundation/CoreFoundation.h>
+ #include <OpenDirectory/OpenDirectory.h>
+ #include <OpenDirectory/OpenDirectoryPriv.h>
+-#include <DirectoryService/DirectoryService.h>
+-#include "ForkSafeLogging.h"
++#include <DirectoryService/DirServicesTypes.h>
++#include <DirectoryService/DirServicesConst.h>
+ 
+ #define PAM_SM_AUTH
+ #define PAM_SM_ACCOUNT
+@@ -87,14 +110,17 @@ _process_prl(ODRecordRef record, pam_handle_t * pamh, const char * user)
+     int retval = od_record_check_pwpolicy(record, &error);
+     if (retval == PAM_APPLE_ACCT_LOCKED || retval == PAM_APPLE_ACCT_TEMP_LOCK) {
+         /* check user password policy */
+-        NSNumber *timeRemaining = ((__bridge NSError *)error).userInfo[kODBackOffSeconds];
+-        if (timeRemaining && ([timeRemaining isKindOfClass: [NSNumber class]])) {
+-            long backoff = timeRemaining.longValue;
+-            pam_set_data(pamh, "prl_backoff", backoff, NULL);
++        CFDictionaryRef userInfo = error ? CFErrorCopyUserInfo(error) : NULL;
++        CFTypeRef timeRemaining = userInfo ? CFDictionaryGetValue(userInfo, kODBackOffSeconds) : NULL;
++        if (timeRemaining && (CFGetTypeID(timeRemaining) == CFNumberGetTypeID())) {
++            long backoff = 0;
++            CFNumberGetValue((CFNumberRef)timeRemaining, kCFNumberLongType, &backoff);
++            pam_set_data(pamh, "prl_backoff", (void *)backoff, NULL);
+             _LOG_DEBUG("%s - PRL backoff for user %s reported as %ld", PM_DISPLAY_NAME, user, backoff);
+         } else {
+             _LOG_ERROR("%s - wrong PRL backoff received", PM_DISPLAY_NAME);
+         }
++        CFReleaseSafe(userInfo);
+     }
+     CFReleaseSafe(error);
+     return retval;
+@@ -239,27 +265,6 @@ pam_sm_authenticate(pam_handle_t * pamh, int flags, int argc, const char **argv)
+ 		goto cleanup;
+ 	}
+ 
+-	/* <rdar://problem/48780154> Adopt new OD SPI and entitlement to use the bootstrap token prior to user authentication */
+-	if (&CP_SupportsBootstrapToken != NULL) {
+-		retval = od_record_attribute_create_cfstring(cfRecord, (CFStringRef) kODAttributeTypeAuthenticationAuthority, &cfAuthAuthority);
+-		NSArray<NSString *> *authAttributes = nil;
+-		if (retval == PAM_SUCCESS)
+-            authAttributes = [(__bridge NSString *)cfAuthAuthority componentsSeparatedByString:@";"];
+-		if ([authAttributes containsObject:@(kDSTagAuthAuthorityLocalCachedUser)] &&
+-			CP_SupportsBootstrapToken()) {
+-			/* Get token + authenticate. */
+-			NSString *token = CP_GetBootstrapTokenWithOptions(@{ @"NetworkTimeout" : @20 }, NULL);
+-			if (token != NULL && token.length > 0) {
+-                if (ODRecordSetNodeCredentialsWithBootstrapToken(cfRecord, (__bridge CFStringRef) token, &odErr)) {
+-                    _LOG_VERBOSE("%s - Authenticated with bootstrap token.", PM_DISPLAY_NAME);
+-				} else {
+-					_LOG_ERROR("%s - Failed to set bootstrap token: %s.", PM_DISPLAY_NAME, [(__bridge NSError *)odErr description].UTF8String);
+-					CFReleaseNull(odErr);
+-				}
+-			}
+-		}
+-	}
+-
+ 	/* Verify the user's password */
+ 	cfPassword = CFStringCreateWithCString(kCFAllocatorDefault, password, kCFStringEncodingUTF8);
+ 	retval = PAM_USER_UNKNOWN;

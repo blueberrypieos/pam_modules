@@ -2,18 +2,19 @@ Source: pam-modules
 Section: libs
 Priority: optional
 Maintainer: Maxwell <maxwell@blueberrypieos.com>
-Build-Depends: pietoolchain (>= 0.1.0)
+Build-Depends: opendirectory-dev (>= 146+ds1), pietoolchain (>= 0.1.0)
 Standards-Version: 4.7.3
 Homepage: https://github.com/apple-oss-distributions/pam_modules
-Vcs-Git: https://github.com/blueberrypieos/pam-modules.git -b blueberry-pie-os/latest
-Vcs-Browser: https://github.com/blueberrypieos/pam-modules
+Vcs-Git: https://github.com/blueberrypieos/pam_modules.git -b blueberry-pie-os/latest
+Vcs-Browser: https://github.com/blueberrypieos/pam_modules
 Rules-Requires-Root: no
 
 Package: pam-modules
 Architecture: darwin-arm64
 Essential: yes
 Priority: required
-Depends: libsystem, openpam
+Depends: base-files (>= 2), corefoundation, libsystem, opendirectory, openpam
 Description: PAM modules
- PAM bundles for root authentication, group membership, login restrictions,
- account identity, session records and environment variables.
+ PAM bundles for directory authentication, service access lists, root
+ authentication, group membership, login restrictions, account identity,
+ session records and environment variables.

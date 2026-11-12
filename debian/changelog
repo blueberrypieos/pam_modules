@@ -1,3 +1,12 @@
+pam-modules (217.100.6+ds2-1) blueberry-pie-os; urgency=medium
+
+  * Build pam_opendirectory.
+  * Build pam_sacl.
+  * Allow a pam_sacl trust account only when it has no passwd entry.
+  * The Vcs fields and the source notice name the pam_modules repository.
+
+ -- Maxwell <maxwell@blueberrypieos.com>  Wed, 11 Nov 2026 22:39:35 +0000
+
 pam-modules (217.100.6+ds1-1) blueberry-pie-os; urgency=medium
 
   * PAM modules 217.100.6
