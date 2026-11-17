@@ -1,0 +1,55 @@
+Description: Check a group that lists no members by name
+ pam_group skipped a group whose member list was empty. A user can still be
+ a member by primary group, by UUID or through a nested group. So a deny
+ rule for such a group let its members in. FreeBSD's pam_group dropped the
+ same check in 2014. The manual page no longer says that fail_safe admits
+ the applicant to an existing group with no members.
+Origin: backport, https://github.com/freebsd/freebsd-src/commit/ec5622ad86451436339a2dc2c15213956d73adc8
+Author: The Blueberry Pie OS Authors
+Forwarded: no
+Last-Update: 2026-11-17
+
+--- a/modules/pam_group/pam_group.c
++++ b/modules/pam_group/pam_group.c
+@@ -32,6 +32,9 @@
+  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  * SUCH DAMAGE.
+  */
++/*
++ * Modified 2026-11-17: a group that lists no members by name is checked like any other group.
++ */
+ 
+ #include <sys/cdefs.h>
+ 
+@@ -111,10 +114,6 @@ pam_sm_acct_mgmt(pam_handle_t *pamh, int
+ 		if ((grp = getgrnam(p)) == NULL || grp->gr_mem == NULL)
+ 			continue;
+ 
+-		/* check if the group is empty */
+-		if (*grp->gr_mem == NULL)
+-			continue;
+-
+ 		found_group = 1;
+ 
+ 		/* check membership */
+--- a/modules/pam_group/pam_group.8
++++ b/modules/pam_group/pam_group.8
+@@ -35,7 +35,8 @@
+ .\"
+ .\" Protions copyright (c) 2009 Apple Inc. All rights reserved.
+ .\"
+-.Dd February 7, 2009
++.\" Modified 2026-11-17: fail_safe applies only when none of the groups exists.
++.Dd November 17, 2026
+ .Dt pam_group 8
+ .Os
+ .Sh NAME
+@@ -67,7 +68,7 @@ The following options may be passed to t
+ .It Cm deny
+ Reverse the meaning of the test, i.e., reject the applicant if and only if he or she is a member of the specified group.  This can be useful to exclude certain groups of users from certain services.
+ .It Cm fail_safe
+-If the specified group does not exist, or has no members, act as if it does exist and the applicant is a member.
++If none of the specified groups exists, act as if the applicant is a member.
+ .It Cm group=groupname
+ Specify the name of the group to check.  This can be a comma-separated list 
+ .Pq i.e. Dq group=admin,wheel .

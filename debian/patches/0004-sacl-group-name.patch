@@ -1,0 +1,28 @@
+Description: Look up the service access group without a trailing newline
+ When a user name has no UUID, pam_sacl looks up the service access group
+ to see whether access to the service is limited. The name it looked up
+ ended in a newline, so the group was never found. The user was then let in
+ unless com.apple.access_all_services existed.
+Author: The Blueberry Pie OS Authors
+Forwarded: no
+Last-Update: 2026-11-17
+
+--- a/modules/pam_sacl/pam_sacl.c
++++ b/modules/pam_sacl/pam_sacl.c
+@@ -22,6 +22,7 @@
+  */
+ /*
+  * Modified 2026-11-11: a trust account is one with no passwd entry (APSL 2.0 section 2.2(b)).
++ * Modified 2026-11-17: the service access group name has no newline (APSL 2.0 section 2.2(b)).
+  */
+ 
+ #include <stdio.h>
+@@ -111,7 +112,7 @@ PAM_EXTERN int pam_sm_acct_mgmt(pam_hand
+ 		 * this if the relevant SACL groups exist.
+ 		 */
+ 
+-		if (asprintf(&sacl_group, "com.apple.access_%s\n",
++		if (asprintf(&sacl_group, "com.apple.access_%s",
+ 							service) == -1) {
+ 			return PAM_SYSTEM_ERR;
+ 		}

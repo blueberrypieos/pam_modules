@@ -1,3 +1,14 @@
+pam-modules (217.100.6+ds2-2) blueberry-pie-os; urgency=medium
+
+  * Build-Depend on pietoolchain-host and pietoolchain-sdk.
+  * pam_opendirectory refuses a password change with a password that is not
+    valid UTF-8.
+  * pam_sacl looks up the service access group without a trailing newline
+    when the user has no UUID.
+  * pam_group checks membership of a group that lists no members by name.
+
+ -- Maxwell <maxwell@blueberrypieos.com>  Tue, 17 Nov 2026 19:31:07 +0000
+
 pam-modules (217.100.6+ds2-1) blueberry-pie-os; urgency=medium
 
   * Build pam_opendirectory.
